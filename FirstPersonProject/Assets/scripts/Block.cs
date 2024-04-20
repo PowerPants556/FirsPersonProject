@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public int health { get; set; }
+    [SerializeField] private BlockTypes type;
+
+    public void DestroyBehavior()
     {
-        
+        GameObject miniBlock = Resources.Load<GameObject>("mini" + type.ToString());
+        Instantiate(miniBlock, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
+    private void Start()
+    {
+        health = (int)type;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         
     }

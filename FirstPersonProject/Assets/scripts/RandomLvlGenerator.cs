@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RandomLvlGenerator : MonoBehaviour
 {
-    [SerializeField] private GameObject groundPref, grassPref;
+    [SerializeField] private GameObject groundPref, grassPref, chestPrefab;
     private int baseHeight = 2, maxBlocksCountY = 10, chunkSize = 16, perlinNoiseSensetivity = 25, chunkCount = 4;
     private float seedX, seedY;
     private void Start()
@@ -18,6 +18,16 @@ public class RandomLvlGenerator : MonoBehaviour
                 CreateChunk(x, z);
             }
         }
+    }
+
+    private GameObject CreateChest(int x, int y, int z)
+    {
+        int createChance = Random.Range(0, 100);
+        if(createChance > 98)
+        {
+            return Instantiate(chestPrefab, new Vector3(x, y, z), Quaternion.identity);
+        }
+        return null;
     }
 
     private void Update()
@@ -50,6 +60,9 @@ public class RandomLvlGenerator : MonoBehaviour
                     if(y == height - 1)
                     {
                         obj = Instantiate(grassPref, new Vector3(x, y, z), Quaternion.identity);
+                        GameObject chest = CreateChest(x, height, z);
+                        if (chest != null) 
+                            chest.transform.SetParent(chunk.transform);
                     }
                     else
                     {
