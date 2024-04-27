@@ -38,6 +38,10 @@ public class InvMenager : MonoBehaviour
     {
         return chestContent;
     }
+    public GameObject GetDescriptionPanel()
+    {
+        return descriptionPanel;
+    }
     public void CreateItem(int itemId, List<ItemData> items)
     {
         ItemData item = new ItemData(this.items[itemId].name,
@@ -77,7 +81,7 @@ public class InvMenager : MonoBehaviour
         currentItem.transform.Find("ItemName").GetComponent<Text>().text = item.name;
         currentItem.transform.Find("ItemImage").GetComponent<Image>().sprite = Resources.Load<Sprite>(item.name);
         currentItem.transform.Find("ItemCount").GetComponent<Text>().text = item.count.ToString();
-        currentItem.transform.Find("ItemCount").GetComponent<Text>().color = item.isUniq ? Color.clear : new Color(0.7137255f, 0.639557f, 0.3215687f, 1);
+        currentItem.transform.Find("ItemCount").GetComponent<Text>().color = item.isUniq ? Color.clear : new Color(1f, 1f, 1f, 1);
         items.Add(currentItem);
     }
 }
