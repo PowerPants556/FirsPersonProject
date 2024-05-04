@@ -1111,6 +1111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bc4bbc69c9ddac49abbf077fd4945e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  descriptionPanelText: {fileID: 855972502}
+  tempParentForSlots: {fileID: 1955016331}
   slotPref: {fileID: 6342921388493721596, guid: d6fea17c65600304fba0e8c554de0329, type: 3}
   invPanel: {fileID: 1384844348}
   chestPanel: {fileID: 649541151}

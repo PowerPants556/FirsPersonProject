@@ -18,6 +18,13 @@ public class PlayerCon : MonoBehaviour
     [SerializeField]
     private Transform inventoryContent;
     private bool canMove = true;
+
+    public static PlayerCon instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         Cursor.visible = false;

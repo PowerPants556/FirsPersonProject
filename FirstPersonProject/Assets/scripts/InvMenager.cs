@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class InvMenager : MonoBehaviour
 {
+    [SerializeField] private Text descriptionPanelText;
+    [SerializeField] private Transform tempParentForSlots;
     [SerializeField] private GameObject slotPref, invPanel, chestPanel, invContent, chestContent, descriptionPanel;
     public ItemData[] items;
     public List<GameObject> invSlots = new List<GameObject>();
@@ -21,6 +23,15 @@ public class InvMenager : MonoBehaviour
         invPanel.SetActive(false);
         chestPanel.SetActive(false);
         descriptionPanel.SetActive(false);
+    }
+
+    public Transform GetTemptParentForSlots()
+    {
+        return tempParentForSlots;
+    }
+    public Text GetDescriptionPanelText()
+    {
+        return descriptionPanelText;
     }
     public GameObject GetInventoryPanel()
     {
