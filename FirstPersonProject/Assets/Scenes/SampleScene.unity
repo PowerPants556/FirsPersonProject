@@ -1262,6 +1262,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &622031808 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7164388905215982165, guid: 68d103b645066c34a8f278271229b5ea, type: 3}
+  m_PrefabInstance: {fileID: 2121240242}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &649541151
 GameObject:
   m_ObjectHideFlags: 0
@@ -2148,10 +2153,15 @@ MonoBehaviour:
   charecterConn: {fileID: 1094394815}
   playerCamera: {fileID: 963194225}
   particleBlockObject: {fileID: 5973353389971075885, guid: 6668ca51c37ae554db7527d3c71fb149, type: 3}
-  tool: {fileID: 116432259}
+  itemYouCanEquipeName: EquipeNotSelected
   inventoryItems: []
   currentChestItems: []
   inventoryContent: {fileID: 0}
+  equipableItems:
+  - {fileID: 116432259}
+  - {fileID: 1917146875}
+  - {fileID: 622031808}
+  - {fileID: 267600767}
 --- !u!1 &1131280558
 GameObject:
   m_ObjectHideFlags: 0
@@ -2851,6 +2861,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ee82d0b0e603b04ca9796224b001a8e, type: 3}
+--- !u!1 &1917146875 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7440254975354529523, guid: a8c18b956f128bb47a807394bc13644b, type: 3}
+  m_PrefabInstance: {fileID: 740466081}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1925270626
 GameObject:
   m_ObjectHideFlags: 0

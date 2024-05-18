@@ -4,20 +4,27 @@ using UnityEngine;
 
 public class PlayerCon : MonoBehaviour
 {
+    public const string EQUIPE_NOT_SELECTED_TEXT = "EquipeNotSelected";
     private const float gravityScale = 9.8f, speedScale = 5f, jumpForce = 8f, turnSpeed = 90f;
     private float verticalSpeed = 0f, mouseX = 0f, mouseY = 0f, currentCameraAngelX = 0f;
     [SerializeField] private CharacterController charecterConn;
     [SerializeField] private GameObject playerCamera;
 
-    [SerializeField] private GameObject particleBlockObject, tool;
+    [SerializeField] private GameObject particleBlockObject;
+    private GameObject currentEquipedItem;
     private const float hitScaleSpeed = 15f;
     private float hitLastTime;
+    [HideInInspector]public string itemYouCanEquipeName = EQUIPE_NOT_SELECTED_TEXT;
 
 
     public List<ItemData> inventoryItems, currentChestItems;
     [SerializeField]
     private Transform inventoryContent;
     private bool canMove = true;
+    [SerializeField] private GameObject[] equipableItems;
+
+    private RaycastHit hit;
+
 
     public static PlayerCon instance;
 
@@ -37,7 +44,6 @@ public class PlayerCon : MonoBehaviour
         if (canMove)
         {
             Move();
-            RaycastHit hit;
             if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 5f))
             {
                 if (Input.GetMouseButton(0))
@@ -93,9 +99,18 @@ public class PlayerCon : MonoBehaviour
     {
         if (Time.time - hitLastTime > 1 / hitScaleSpeed)
         {
-            tool.GetComponent<Animator>().SetTrigger("attack");
+            currentEquipedItem.GetComponent<Animator>().SetTrigger("attack");
             hitLastTime = Time.time;
-            block.health -= tool.GetComponent<Tools>().damageToBlock;
+
+            Tools currentToolInfo;
+            if (currentEquipedItem.TryGetComponent<Tools>(out currentToolInfo))
+            {
+                block.health -= currentToolInfo.damageToBlock;
+            }
+            else
+            {
+                block.health -= 1;
+            }
             GameObject particleObj = Instantiate(particleBlockObject, block.transform.position, Quaternion.identity);
             particleObj.GetComponent<ParticleSystemRenderer>().material = block.GetComponent<MeshRenderer>().material;
 
