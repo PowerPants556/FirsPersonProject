@@ -37,6 +37,7 @@ public class PlayerCon : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         InvMenager.instance.CreateItem(0, inventoryItems);
+        EquipItem("Pickaxe");
     }
 
     private void Update()
@@ -50,15 +51,25 @@ public class PlayerCon : MonoBehaviour
                 {
                     ObjectINteraction(hit.transform.gameObject);
                 }
+                else if (Input.GetMouseButton(1))
+                {
+                    ItemAbility();
+                }
             }
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && !InvMenager.instance.GetInventoryPanel().activeSelf)
         {
             OpenInventory();
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {
             CloseInventoryPanel();
+        }
+        else if (Input.GetKeyDown(KeyCode.E) &&
+            InvMenager.instance.GetInventoryPanel().activeSelf &&
+            itemYouCanEquipeName != EQUIPE_NOT_SELECTED_TEXT)
+        {
+            EquipItem(itemYouCanEquipeName);
         }
     }
 
@@ -191,6 +202,100 @@ public class PlayerCon : MonoBehaviour
         InvMenager.instance.GetChestPanel().SetActive(false);
         InvMenager.instance.GetInventoryPanel().SetActive(false);
     }
+
+    private void EquipItem(string toolName)
+    {
+        foreach(GameObject tool in equipableItems)
+        {
+            if(toolName == tool.name)
+            {
+                tool.SetActive(true);
+                currentEquipedItem = tool;
+                toolName = EQUIPE_NOT_SELECTED_TEXT;
+            }
+            else
+            {
+                tool.SetActive(false);
+            }
+        }
+    }
+
+    private void ItemAbility()
+    {
+        switch (currentEquipedItem.name)
+        {
+            case "Ground":
+                CreateBlock();
+                break;
+            case "Meat":
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    private void CreateBlock()
+    {
+        GameObject blockPref = Resources.Load<GameObject>("Ground");
+        Vector3 tempPos = hit.transform.gameObject.transform.position;
+        Vector3 newBlockPos = Vector3.zero;
+        if(hit.transform.gameObject.tag == "Block")
+        {
+            GameObject currentBlock = Instantiate(blockPref);
+            if (hit.point.y == tempPos.y + 0.5f)
+            {
+                newBlockPos = new Vector3(tempPos.x, tempPos.y + 1, tempPos.z);
+            }
+            else if (hit.point.y == tempPos.y - 0.5f)
+            {
+                newBlockPos = new Vector3(tempPos.x, tempPos.y - 1, tempPos.z);
+            }
+
+            if (hit.point.x == tempPos.x + 0.5f)
+            {
+                newBlockPos = new Vector3(tempPos.x + 1, tempPos.y, tempPos.z);
+            }
+            else if (hit.point.x == tempPos.x - 0.5f)
+            {
+                newBlockPos = new Vector3(tempPos.x - 1 , tempPos.y, tempPos.z);
+            }
+
+            if (hit.point.z == tempPos.z + 0.5f)
+            {
+                newBlockPos = new Vector3(tempPos.x, tempPos.y, tempPos.z + 1);
+            }
+            else if (hit.point.z == tempPos.z - 0.5f)
+            {
+                newBlockPos = new Vector3(tempPos.x, tempPos.y, tempPos.z - 1);
+            }
+
+            currentBlock.transform.position = newBlockPos;
+            currentBlock.transform.SetParent(hit.transform.parent);
+            ModifyItemCount("Ground");
+        }
+    }
+
+    private void ModifyItemCount(string itemName)
+    {
+        foreach(ItemData item in inventoryItems)
+        {
+            if(item.name == itemName)
+            {
+                item.count--;
+                if(item.count <= 0)
+                {
+                    inventoryItems.Remove(item);
+                    if(inventoryItems.Count > 0)
+                    {
+                        EquipItem(inventoryItems[0].name);
+                    }
+                }
+                break;
+            }
+        }
+    }
+
     private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.name.StartsWith("mini"))
