@@ -45,13 +45,13 @@ public class PlayerCon : MonoBehaviour
         if (canMove)
         {
             Move();
-            if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 5f))
+            if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit))
             {
                 if (Input.GetMouseButton(0))
                 {
                     ObjectINteraction(hit.transform.gameObject);
                 }
-                else if (Input.GetMouseButton(1))
+                else if (Input.GetMouseButtonDown(1))
                 {
                     ItemAbility();
                 }
@@ -137,14 +137,31 @@ public class PlayerCon : MonoBehaviour
         switch (currentObj.tag)
         {
             case "Block":
-                Dig(currentObj.GetComponent<Block>());
+                if(Vector3.Distance(transform.position, currentObj.transform.position) < 5f)
+                {
+                    Dig(currentObj.GetComponent<Block>());
+                }
                 break;
             case "Enemy":
+                Attack(currentObj);
                 break;
             case "Chest":
-                currentChestItems = currentObj.GetComponent<Chest>().chestItems;
-                OpenChest();
+                if(Vector3.Distance(transform.position, currentObj.transform.position) < 5f)
+                {
+                    currentChestItems = currentObj.GetComponent<Chest>().chestItems;
+                    OpenChest();
+                }
                 break;
+        }
+    }
+
+    private void Attack(GameObject currentObj)
+    {
+        if (Time.time - hitLastTime > 1 / hitScaleSpeed)
+        {
+            hitLastTime = Time.time;
+            var enemy = currentObj.GetComponent<Enemy>();
+            enemy.TakeDamage(currentEquipedItem.GetComponent<Tools>().damageToEnemy);
         }
     }
 

@@ -6,6 +6,7 @@ public enum BlockTypes
 public enum ToolTypes
 {
     PICKAXE = 1,
+    PISTOL = 2,
     SWORD = 4
 }
 public enum ToolMaterials
